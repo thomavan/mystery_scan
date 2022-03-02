@@ -21,27 +21,27 @@ source_files = [
     os.path.join(src_path, 'BoostPythonCoreScanner.cpp')
 ]
 
-zebra_scanner_module = Extension("zebra_scanner",
+zebra_scanner_module = Extension("mystery_scan",
     include_dirs=[
-        '/usr/include/zebra-scanner',
+        '/usr/include/mystery_scan',
         get_pybind_include(),
         src_path
     ],
-    library_dirs=['/usr/lib/zebra-scanner/corescanner'],
+    library_dirs=['/usr/lib/mystery_scan/corescanner'],
     libraries=['cs-client', 'cs-common', 'pugixml'],
     sources=source_files,
     extra_compile_args=['-Wno-deprecated', '-std=c++11', '-fvisibility=hidden']
 )
 
 setup(
-    name="zebra-scanner",
+    name="mystery_scan",
     version="v0.2.5",
-    author="David Jablonski",
-    author_email="dayjaby@gmail.com",
+    author="Tho Van",
+    author_email="thomas.vanniere@cbc.lu",
     description="Scan barcodes with a zebra barcode scanner",
     long_description=long_description,
     long_description_content_type="text/x-rst",
-    url="https://github.com/dayjaby/zebra-scanner",
+    url="https://github.com/thomavan/mystery_scan",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python",
