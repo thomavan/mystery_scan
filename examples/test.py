@@ -32,6 +32,9 @@ def on_scanner_added(scanner):
         def on_barcode(barcode):
             print("Scanned:")
             print(barcode.code, barcode.type)
+            print("Sending request ...")
+            r = requests.post('https://test.ocelot.test/api/v1/scanned-barcode/', data={ 'key1': scanner.GUID, 'barcode': barcode.code })
+            print("Request result : ", r)
 
 @cs.on_scanner_removed
 def on_scanner_removed(scanner):
