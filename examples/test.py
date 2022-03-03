@@ -1,5 +1,6 @@
 import pprint
 import time
+import requests
 
 from zebra_scanner import CoreScanner
 
