@@ -85,7 +85,9 @@ public:
 	py::dict attributes;
 
 	py::dict get_dict();
-
+	
+	void BeepError();
+	void BeepSuccess();
 	void PullTrigger();
 	void ReleaseTrigger();
 	void FetchAttributes();
