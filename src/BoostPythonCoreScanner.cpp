@@ -104,6 +104,34 @@ void Scanner::ReleaseTrigger()
     ::ExecCommand(CMD_DEVICE_RELEASE_TRIGGER, inXml, outXml, &status);
 }
 
+void Scanner::BeepError()
+{
+	// beep
+    StatusID status;
+    std::string inXml = "<inArgs><scannerID>" + scannerID + "</scannerID><cmdArgs><arg-int>5</arg-int></cmdArgs></inArgs>";
+    std::string outXml;
+    ::ExecCommand(SET_ACTION, inXml, outXml, &status);
+
+	// LED
+    std::string inXml = "<inArgs><scannerID>" + scannerID + "</scannerID><cmdArgs><arg-int>43</arg-int></cmdArgs></inArgs>";
+    std::string outXml;
+    ::ExecCommand(SET_ACTION, inXml, outXml, &status);
+}
+
+void Scanner::BeepSuccess()
+{
+	// beep
+    StatusID status;
+    std::string inXml = "<inArgs><scannerID>" + scannerID + "</scannerID><cmdArgs><arg-int>7</arg-int></cmdArgs></inArgs>";
+    std::string outXml;
+    ::ExecCommand(SET_ACTION, inXml, outXml, &status);
+
+	// LED
+    std::string inXml = "<inArgs><scannerID>" + scannerID + "</scannerID><cmdArgs><arg-int>47</arg-int></cmdArgs></inArgs>";
+    std::string outXml;
+    ::ExecCommand(SET_ACTION, inXml, outXml, &status);
+}
+
 py::dict Scanner::get_dict() {
 	py::dict d;
 	d["type"] = type;
