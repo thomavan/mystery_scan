@@ -47,6 +47,9 @@ PYBIND11_MODULE(zebra_scanner, m)
 		.def("on_barcode", &Scanner::OnBarcodeDecorator)
 		.def("pull_trigger", &Scanner::PullTrigger)
 		.def("release_trigger", &Scanner::ReleaseTrigger)
+		.def("scan_success", &Scanner::BeepSuccess)
+		.def("scan_error", &Scanner::BeepError)
+		.def("scan_warning", &Scanner::BeepWarning)
 		.def("fetch_attributes", static_cast<void (Scanner::*)()>(&Scanner::FetchAttributes))
 		.def("fetch_attributes", static_cast<void (Scanner::*)(std::string)>(&Scanner::FetchAttributes))
 		.def_readonly("attributes", &Scanner::attributes)
@@ -90,10 +93,12 @@ void Scanner::OnBarcode(Barcode& obj) {
 
 void Scanner::PullTrigger()
 {
+    // return "test";
     StatusID status; 
     std::string inXml = "<inArgs><scannerID>" + scannerID + "</scannerID></inArgs>";
     std::string outXml;
     ::ExecCommand(CMD_DEVICE_PULL_TRIGGER, inXml, outXml, &status);
+
 }
 
 void Scanner::ReleaseTrigger()
@@ -104,32 +109,63 @@ void Scanner::ReleaseTrigger()
     ::ExecCommand(CMD_DEVICE_RELEASE_TRIGGER, inXml, outXml, &status);
 }
 
-void Scanner::BeepError()
+void Scanner::BeepError(string id)
 {
+    StatusID status;    
+    std::string outXml;
 	// beep
-    StatusID status;
-    std::string inXml = "<inArgs><scannerID>" + scannerID + "</scannerID><cmdArgs><arg-int>5</arg-int></cmdArgs></inArgs>";
-    std::string outXml;
-    ::ExecCommand(SET_ACTION, inXml, outXml, &status);
+    std::string inXml = "<inArgs><scannerID>" + id + "</scannerID><cmdArgs><arg-int>7</arg-int></cmdArgs></inArgs>";
+    ::ExecCommand(CMD_DEVICE_BEEP_CONTROL, inXml, outXml, &status);
 
-	// LED
-    std::string inXml = "<inArgs><scannerID>" + scannerID + "</scannerID><cmdArgs><arg-int>43</arg-int></cmdArgs></inArgs>";
-    std::string outXml;
-    ::ExecCommand(SET_ACTION, inXml, outXml, &status);
+	// LED ON
+    inXml = "<inArgs><scannerID>" + id + "</scannerID><cmdArgs><arg-int>47</arg-int></cmdArgs></inArgs>";
+    ::ExecCommand(CMD_DEVICE_BEEP_CONTROL, inXml, outXml, &status);
+    
+      // sleep(2000);
+    	// LED OFF
+	    inXml = "<inArgs><scannerID>" + id + "</scannerID><cmdArgs><arg-int>48</arg-int></cmdArgs></inArgs>";
+	    ::ExecCommand(CMD_DEVICE_BEEP_CONTROL, inXml, outXml, &status);
 }
 
-void Scanner::BeepSuccess()
+void Scanner::BeepWarning(string id)
 {
+    StatusID status;    
+    std::string outXml;
 	// beep
-    StatusID status;
-    std::string inXml = "<inArgs><scannerID>" + scannerID + "</scannerID><cmdArgs><arg-int>7</arg-int></cmdArgs></inArgs>";
-    std::string outXml;
-    ::ExecCommand(SET_ACTION, inXml, outXml, &status);
+    std::string inXml = "<inArgs><scannerID>" + id + "</scannerID><cmdArgs><arg-int>4</arg-int></cmdArgs></inArgs>";
+    ::ExecCommand(CMD_DEVICE_BEEP_CONTROL, inXml, outXml, &status);
 
-	// LED
-    std::string inXml = "<inArgs><scannerID>" + scannerID + "</scannerID><cmdArgs><arg-int>47</arg-int></cmdArgs></inArgs>";
+	// LED ON
+    inXml = "<inArgs><scannerID>" + id + "</scannerID><cmdArgs><arg-int>45</arg-int></cmdArgs></inArgs>";
+    ::ExecCommand(CMD_DEVICE_BEEP_CONTROL, inXml, outXml, &status);
+    
+      // sleep(2000);
+    	// LED OFF
+	    inXml = "<inArgs><scannerID>" + id + "</scannerID><cmdArgs><arg-int>46</arg-int></cmdArgs></inArgs>";
+	    ::ExecCommand(CMD_DEVICE_BEEP_CONTROL, inXml, outXml, &status);
+}
+
+void Scanner::BeepSuccess(string id)
+{
+    StatusID status;
     std::string outXml;
-    ::ExecCommand(SET_ACTION, inXml, outXml, &status);
+	// beep
+    std::string inXml = "<inArgs><scannerID>" + id + "</scannerID><cmdArgs><arg-int>5</arg-int></cmdArgs></inArgs>";
+    ::ExecCommand(CMD_DEVICE_BEEP_CONTROL, inXml, outXml, &status);
+
+	// LED ON
+    inXml = "<inArgs><scannerID>" + id + "</scannerID><cmdArgs><arg-int>43</arg-int></cmdArgs></inArgs>";
+    ::ExecCommand(CMD_DEVICE_BEEP_CONTROL, inXml, outXml, &status);
+    
+    //int delay;
+    //delay = CLOCKS_PER_SEC * 3;
+    //clock_t now = clock();
+    //while(clock() - now <delay) {
+    	// LED OFF
+	    inXml = "<inArgs><scannerID>" + id + "</scannerID><cmdArgs><arg-int>42</arg-int></cmdArgs></inArgs>";
+	    ::ExecCommand(CMD_DEVICE_BEEP_CONTROL, inXml, outXml, &status);
+    //}
+    
 }
 
 py::dict Scanner::get_dict() {
