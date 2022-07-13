@@ -145,7 +145,7 @@ void Scanner::BeepLongError(string id)
 	    inXml = "<inArgs><scannerID>" + id + "</scannerID><cmdArgs><arg-int>48</arg-int></cmdArgs></inArgs>";
 	    ::ExecCommand(CMD_DEVICE_BEEP_CONTROL, inXml, outXml, &status);
 }
-
+  
 void Scanner::BeepWarning(string id)
 {
     StatusID status;    
