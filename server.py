@@ -76,7 +76,7 @@ def on_scanner_added(scanner):
                 print("Request error - Unable to send request")
                 
                 # emit error sound and color
-                scanner.scan_error(str(scannerId))
+                # scanner.scan_error(str(scannerId))
 
 # when a scanne ris removed/unplugged
 @cs.on_scanner_removed
